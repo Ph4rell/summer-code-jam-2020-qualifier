@@ -34,9 +34,31 @@ class Article:
       self.content = content
 
     def __repr__(self):
-      return f'Article title={self.title} author={self.author} publication_date={self.publication_date.isoformat()}'
+      return f"<Article title=\"{self.title}\" author='{self.author}' publication_date='{self.publication_date.isoformat()}'>"
 
     def __len__(self):
       return len(self.content)
 
-    def short_introduction(self, n_characters:int):
+    # def short_introduction(self, n_characters:int):
+    #   count = 0
+    #   for i in self.content[:n_characters].rsplit(" "):
+    #     count += 1
+    #     print(f'{i} count {count}')
+      # return ' '.join(self.content[:n_characters].rsplit(" "))
+      
+    def most_common_words(self, n_words:int):
+      d = dict()
+  
+      words = self.content.split("'")
+      
+      for word in words:
+        # word = word.strip(",.?!'").split("'")
+        word = word.split(' ').strip(",.?!'")
+        if word in d:
+          d[word] = d[word] + 1
+        else:
+          d[word] = 1
+
+      return dict(sorted(d.items()))
+        
+      
