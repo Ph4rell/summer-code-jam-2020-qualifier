@@ -15,6 +15,8 @@ Important notes for submission:
 """
 import datetime
 import typing
+import collections
+import re
 
 
 class ArticleField:
@@ -39,26 +41,31 @@ class Article:
     def __len__(self):
       return len(self.content)
 
-    # def short_introduction(self, n_characters:int):
-    #   count = 0
-    #   for i in self.content[:n_characters].rsplit(" "):
-    #     count += 1
-    #     print(f'{i} count {count}')
-      # return ' '.join(self.content[:n_characters].rsplit(" "))
+    def short_introduction(self, n_characters:int):
+      count = 0
+      result = ''
+      partial_list = list()
+      for i, element in enumerate(self.content.replace('\n', ' ')):
+        for char in element:
+          if count < n_characters:
+            count+=1
+            partial_list.append(char)
+          else:
+            break
+      total_list = self.content.replace('\n', ' ').split(' ')
+      partial_list = "".join(partial_list).split(' ')
+      final_list = [i for i, j in zip(total_list, partial_list) if i == j]
+      return " ".join(final_list)
+
       
     def most_common_words(self, n_words:int):
-      d = dict()
-  
-      words = self.content.split("'")
-      
-      for word in words:
-        # word = word.strip(",.?!'").split("'")
-        word = word.split(' ').strip(",.?!'")
-        if word in d:
-          d[word] = d[word] + 1
-        else:
-          d[word] = 1
+      total_list = re.split("[\W']",self.content.lower())
+      new_list = list()
+      for i in total_list:
+        if i:
+          new_list.append(i)
+      counter = collections.Counter(new_list).most_common(n_words)
+      return dict(counter)
 
-      return dict(sorted(d.items()))
         
       
