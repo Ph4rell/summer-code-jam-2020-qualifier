@@ -17,6 +17,7 @@ import datetime
 import typing
 import collections
 import re
+import itertools
 
 
 class ArticleField:
@@ -28,13 +29,25 @@ class ArticleField:
 
 class Article:
     """The `Article` class you need to write for the qualifier."""
+    id = itertools.count()
+    last_edited = None
+    
 
-    def __init__(self, title: str, author: str, publication_date: datetime.datetime, content: str):
+    def __init__(self, title: str, author: str, publication_date: datetime.datetime, content: str, last_edited = None):
+      self.id = next(Article.id)
       self.title = title
       self.author = author
       self.publication_date = publication_date
-      self.content = content
+      self._content = content
+      self.last_edited = last_edited
 
+      
+    def set_content(self, value):
+      self.last_edited = datetime.datetime.now()
+      self._content = value
+
+    content = property(fset=set_content)
+  
     def __repr__(self):
       return f"<Article title=\"{self.title}\" author='{self.author}' publication_date='{self.publication_date.isoformat()}'>"
 
@@ -68,4 +81,3 @@ class Article:
       return dict(counter)
 
         
-      
