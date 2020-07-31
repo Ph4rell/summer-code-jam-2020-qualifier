@@ -38,15 +38,17 @@ class Article:
       self.title = title
       self.author = author
       self.publication_date = publication_date
-      self._content = content
+      self.content = content
       self.last_edited = last_edited
 
-      
-    def set_content(self, value):
+    @property
+    def content(self):
+      return self._content
+
+    @content.setter 
+    def content(self, value):
       self.last_edited = datetime.datetime.now()
       self._content = value
-
-    content = property(fset=set_content)
   
     def __repr__(self):
       return f"<Article title=\"{self.title}\" author='{self.author}' publication_date='{self.publication_date.isoformat()}'>"
