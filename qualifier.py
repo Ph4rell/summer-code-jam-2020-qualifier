@@ -49,6 +49,9 @@ class Article:
     def content(self, value):
       self.last_edited = datetime.datetime.now()
       self._content = value
+
+    def __lt__(self, other):
+      return self.publication_date < other.publication_date
   
     def __repr__(self):
       return f"<Article title=\"{self.title}\" author='{self.author}' publication_date='{self.publication_date.isoformat()}'>"
